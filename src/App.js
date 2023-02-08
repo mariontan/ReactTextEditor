@@ -68,7 +68,6 @@ const App = () => {
         }), ...indexToInsert]
 
         setInsertedIndex(newInsertedIndex)
-        console.log('props clicked word index', clickedWordIndex + 1)
         const newTemplate = templateArr.join(' ')
         setTemplate(newTemplate);
         setShowMergeFields(false);
@@ -91,13 +90,9 @@ const App = () => {
         if (keyCode !== 8) {
             return
         }
-        console.log('props backspace pressed')
-        console.log('props keycode', keyCode)
-        console.log('props index', index)
-        console.log('props insertedIndex', insertedIndex)
+
         if (insertedIndex.includes(index)) {
             event.preventDefault();
-            console.log('props in')
             const temapleArr = template.split(' ')
             const filteredInsertedIndex = insertedIndex.filter(item => item !== index)
             const newInsertedIndex = filteredInsertedIndex.map((item) => {
@@ -109,7 +104,6 @@ const App = () => {
             temapleArr.splice(index, 1)
             setTemplate(temapleArr.join(' '))
             setInsertedIndex(newInsertedIndex)
-            // setInsertedIndex(insertedIndex.filter(item => item !== index))
         }
     }
     return (
