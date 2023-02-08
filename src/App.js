@@ -27,8 +27,8 @@ const App = () => {
     const handleLoadTemplate = () => {
         axios.get(`${CORS_PROXY_URL}${LOAD_URL}`)
             .then(res => {
-                setTemplate(res.data.Template);
-                setMergeFields(res.data.MergeFields);
+                setTemplate(res.data.template);
+                setMergeFields(res.data.mergeFields);
             })
             .catch(error => {
                 console.error(error);
@@ -49,10 +49,14 @@ const App = () => {
     };
 
     const handleMergeFieldClick = (field) => {
+        const { index } = getTheWord(field.target.selectionStart)
+        setClickedWordIndex(index)
         setTemplate(template + field.Value);
         setShowMergeFields(false);
-    };
 
+    };
+    console.log('props index', clickedWordIndex)
+    console.log('props triangle', trianglePosition)
     return (
         <div>
             <div onMouseLeave={() => setShowMergeFields(false)}>
@@ -61,12 +65,14 @@ const App = () => {
                     onChange={e => setTemplate(e.target.value)}
                     onClick={handleEditorClick}
                 />
-                <Dropdown
-                    mergeFields={mergeFields}
-                    handleMergeFieldClick={handleMergeFieldClick}
-                    showMergeFields={showMergeFields}
-                    setShowMergeFields={setShowMergeFields}
-                />
+                <div style={{ position: 'absolute', top: trianglePosition.top, left: trianglePosition.left }}>
+                    <Dropdown
+                        mergeFields={mergeFields}
+                        handleMergeFieldClick={handleMergeFieldClick}
+                        showMergeFields={showMergeFields}
+                        setShowMergeFields={setShowMergeFields}
+                    />
+                </div>
             </div>
             <div>
                 <p style={{ color: characterCount > 160 ? 'red' : 'black' }}>
@@ -80,3 +86,5 @@ const App = () => {
         </div>
     );
 };
+
+export default App
