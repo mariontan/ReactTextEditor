@@ -69,7 +69,7 @@ const App = () => {
             left: x,
         })
     }
-    console.log('props index', clickedWordIndex)
+
     return (
         <div>
             <div onMouseLeave={() => setShowMergeFields(false)}>
