@@ -57,16 +57,25 @@ const App = () => {
         const newTemplate = templateArr.join(' ')
         setTemplate(newTemplate);
         setShowMergeFields(false);
-
     };
+    const onTextAreaChange = (event) => {
+        const { target, currentTarget } = event
+        const { selectionStart } = target
+        setClickedWordIndex(selectionStart)
+        setTemplate(event.target.value)
+        const { x, y } = getCursorXY(currentTarget, selectionStart)
+        setTrianglePosition({
+            top: y,
+            left: x,
+        })
+    }
     console.log('props index', clickedWordIndex)
-    console.log('props triangle', trianglePosition)
     return (
         <div>
             <div onMouseLeave={() => setShowMergeFields(false)}>
                 <textarea
                     value={template}
-                    onChange={e => setTemplate(e.target.value)}
+                    onChange={onTextAreaChange}
                     onClick={handleEditorClick}
                 />
                 <div style={{ position: 'absolute', top: trianglePosition.top, left: trianglePosition.left }}>
