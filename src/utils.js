@@ -1,6 +1,7 @@
 export const getTheWord = (selectionStart, message) => {
     let arr = message.split(" ");
     let sum = 0
+    // console.log('props', arr)
     for (let i = 0; i < arr.length; i++) {
         sum += arr[i].length + 1
         if (sum > selectionStart) {

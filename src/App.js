@@ -11,6 +11,7 @@ const App = () => {
     const [showMergeFields, setShowMergeFields] = useState(false);
     const [trianglePosition, setTrianglePosition] = useState({});
     const [clickedWordIndex, setClickedWordIndex] = useState(0)
+    const [insertedIndex, setInsertedIndex] = useState([])
 
     useEffect(() => {
         setCharacterCount(template.length);
@@ -53,7 +54,9 @@ const App = () => {
 
     const handleMergeFieldClick = (field) => {
         const templateArr = template.split(' ')
-        templateArr.splice(clickedWordIndex, 0, field.value)
+        templateArr.splice(clickedWordIndex + 1, 0, field.value)
+        setInsertedIndex([...insertedIndex, clickedWordIndex + 1])
+        console.log('props clicked word index', clickedWordIndex + 1)
         const newTemplate = templateArr.join(' ')
         setTemplate(newTemplate);
         setShowMergeFields(false);
@@ -69,7 +72,25 @@ const App = () => {
             left: x,
         })
     }
-
+    const onBackSpace = (event) => {
+        const { keyCode, target } = event
+        const { index } = getTheWord(target.selectionStart, template)
+        // act only on delete
+        if (keyCode !== 8) {
+            return
+        }
+        console.log('props backspace pressed')
+        console.log('props keycode', keyCode)
+        console.log('props index', index)
+        console.log('props insertedIndex', insertedIndex)
+        if (insertedIndex.includes(index)) {
+            console.log('props in')
+            const temapleArr = template.split(' ')
+            temapleArr.splice(index, 1)
+            setTemplate(temapleArr.join(' '))
+            setInsertedIndex(insertedIndex.filter(item => item !== index))
+        }
+    }
     return (
         <div>
             <div onMouseLeave={() => setShowMergeFields(false)}>
@@ -77,6 +98,7 @@ const App = () => {
                     value={template}
                     onChange={onTextAreaChange}
                     onClick={handleEditorClick}
+                    onKeyDown={onBackSpace}
                 />
                 <div style={{ position: 'absolute', top: trianglePosition.top, left: trianglePosition.left }}>
                     <Dropdown
