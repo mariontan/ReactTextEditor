@@ -54,9 +54,16 @@ const App = () => {
 
     const handleMergeFieldClick = (field) => {
         const templateArr = template.split(' ')
-        templateArr.splice(clickedWordIndex + 1, 0, field.value)
-        setInsertedIndex([...insertedIndex, clickedWordIndex + 1])
-        console.log('props clicked word index', clickedWordIndex + 1)
+        const indexToInsert = clickedWordIndex + 1
+        templateArr.splice(indexToInsert, 0, field.value)
+        const newInsertedIndex = [...insertedIndex, indexToInsert]
+        setInsertedIndex(newInsertedIndex.map(item => {
+            if (item > indexToInsert) {
+                return item + 1
+            }
+            return item
+        }))
+        console.log('props clicked word index', indexToInsert)
         const newTemplate = templateArr.join(' ')
         setTemplate(newTemplate);
         setShowMergeFields(false);
@@ -84,12 +91,14 @@ const App = () => {
         console.log('props index', index)
         console.log('props insertedIndex', insertedIndex)
         if (insertedIndex.includes(index)) {
+            event.preventDefault();
             console.log('props in')
             const temapleArr = template.split(' ')
             temapleArr.splice(index, 1)
             setTemplate(temapleArr.join(' '))
             setInsertedIndex(insertedIndex.filter(item => item !== index))
         }
+        return
     }
     return (
         <div>
