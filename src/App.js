@@ -17,6 +17,8 @@ const App = () => {
     }, [template]);
 
     const handleEditorClick = (event) => {
+        const { index } = getTheWord(event.target.selectionStart, template)
+        setClickedWordIndex(index)
         setTrianglePosition({
             top: event.clientY,
             left: event.clientX,
@@ -49,9 +51,10 @@ const App = () => {
     };
 
     const handleMergeFieldClick = (field) => {
-        const { index } = getTheWord(field.target.selectionStart)
-        setClickedWordIndex(index)
-        setTemplate(template + field.Value);
+        const templateArr = template.split(' ')
+        templateArr.splice(clickedWordIndex, 0, field.value)
+        const newTemplate = templateArr.join(' ')
+        setTemplate(newTemplate);
         setShowMergeFields(false);
 
     };
