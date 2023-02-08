@@ -94,11 +94,18 @@ const App = () => {
             event.preventDefault();
             console.log('props in')
             const temapleArr = template.split(' ')
+            const filteredInsertedIndex = insertedIndex.filter(item => item !== index)
+            const newInsertedIndex = filteredInsertedIndex.map((item) => {
+                if (item > index) {
+                    return item - 1
+                }
+                return item
+            })
             temapleArr.splice(index, 1)
             setTemplate(temapleArr.join(' '))
-            setInsertedIndex(insertedIndex.filter(item => item !== index))
+            setInsertedIndex(newInsertedIndex)
+            // setInsertedIndex(insertedIndex.filter(item => item !== index))
         }
-        return
     }
     return (
         <div>
