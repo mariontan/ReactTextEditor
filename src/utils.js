@@ -1,7 +1,6 @@
-export const getTheWord = (selectionStart, message) => {
+export function getTheWord(selectionStart, message) {
     let arr = message.split(" ");
     let sum = 0
-    // console.log('props', arr)
     for (let i = 0; i < arr.length; i++) {
         sum += arr[i].length + 1
         if (sum > selectionStart) {
@@ -14,7 +13,7 @@ export const getTheWord = (selectionStart, message) => {
     }
 }
 
-export const getCursorXY = (input, selectionPoint) => {
+export function getCursorXY(input, selectionPoint) {
     const {
         offsetLeft: inputX,
         offsetTop: inputY,
@@ -54,4 +53,30 @@ export const getCursorXY = (input, selectionPoint) => {
         x: inputX + spanX,
         y: inputY + spanY - 245,
     }
+}
+
+export function getNewInsertedIndex(field, clickedWordIndex, insertedIndex) {
+    const indexToInsert = [];
+    const length = field.value.split(' ').length;
+    for (let i = 1; i <= length; i++) {
+        indexToInsert.push(clickedWordIndex + i);
+    }
+    const newInsertedIndex = [...insertedIndex.map(item => {
+        if (item > clickedWordIndex + 1) {
+            return item + 1;
+        }
+        return item;
+    }), ...indexToInsert];
+    return newInsertedIndex;
+}
+
+export function removeIndex(insertedIndex, index) {
+    const filteredInsertedIndex = insertedIndex.filter(item => item !== index);
+    const newInsertedIndex = filteredInsertedIndex.map((item) => {
+        if (item > index) {
+            return item - 1;
+        }
+        return item;
+    });
+    return newInsertedIndex;
 }

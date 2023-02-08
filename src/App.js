@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CORS_PROXY_URL, HOST, LOAD_URL, TEMPLATE_ID } from './constants';
-import { getTheWord, getCursorXY } from './utils';
+import { getTheWord, getCursorXY, getNewInsertedIndex, removeIndex } from './utils';
 import Dropdown from './components/dropdown'
 
 const App = () => {
@@ -20,10 +20,7 @@ const App = () => {
     const handleEditorClick = (event) => {
         const { index } = getTheWord(event.target.selectionStart, template)
         setClickedWordIndex(index)
-        setTrianglePosition({
-            top: event.clientY,
-            left: event.clientX,
-        });
+        setTrianglePosition({ top: event.clientY, left: event.clientX, });
         setShowMergeFields(true);
     };
 
@@ -53,27 +50,16 @@ const App = () => {
 
 
     const handleMergeFieldClick = (field) => {
-
-        const indexToInsert = []
-        const length = field.value.split(' ').length
-        for (let i = 1; i <= length; i++) {
-            indexToInsert.push(clickedWordIndex + i)
-        }
-        const newInsertedIndex = [...insertedIndex.map(item => {
-            if (item > clickedWordIndex + 1) {
-                return item + 1
-            }
-            return item
-        }), ...indexToInsert]
-
+        const newInsertedIndex = getNewInsertedIndex(field, clickedWordIndex, insertedIndex);
         const templateArr = template.split(' ')
         templateArr.splice(clickedWordIndex + 1, 0, field.value)
         const newTemplate = templateArr.join(' ')
-
         setInsertedIndex(newInsertedIndex)
         setTemplate(newTemplate);
         setShowMergeFields(false);
     };
+
+
     const onTextAreaChange = (event) => {
         const { target, currentTarget } = event
         const { selectionStart } = target
@@ -92,17 +78,10 @@ const App = () => {
         if (keyCode !== 8) {
             return
         }
-
         if (insertedIndex.includes(index)) {
             event.preventDefault();
+            const newInsertedIndex = removeIndex(insertedIndex, index);
             const temapleArr = template.split(' ')
-            const filteredInsertedIndex = insertedIndex.filter(item => item !== index)
-            const newInsertedIndex = filteredInsertedIndex.map((item) => {
-                if (item > index) {
-                    return item - 1
-                }
-                return item
-            })
             temapleArr.splice(index, 1)
             setTemplate(temapleArr.join(' '))
             setInsertedIndex(newInsertedIndex)
@@ -140,3 +119,4 @@ const App = () => {
 };
 
 export default App
+
