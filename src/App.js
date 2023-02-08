@@ -53,13 +53,12 @@ const App = () => {
 
 
     const handleMergeFieldClick = (field) => {
-        const templateArr = template.split(' ')
+
         const indexToInsert = []
         const length = field.value.split(' ').length
         for (let i = 1; i <= length; i++) {
             indexToInsert.push(clickedWordIndex + i)
         }
-        templateArr.splice(clickedWordIndex + 1, 0, field.value)
         const newInsertedIndex = [...insertedIndex.map(item => {
             if (item > clickedWordIndex + 1) {
                 return item + 1
@@ -67,8 +66,11 @@ const App = () => {
             return item
         }), ...indexToInsert]
 
-        setInsertedIndex(newInsertedIndex)
+        const templateArr = template.split(' ')
+        templateArr.splice(clickedWordIndex + 1, 0, field.value)
         const newTemplate = templateArr.join(' ')
+
+        setInsertedIndex(newInsertedIndex)
         setTemplate(newTemplate);
         setShowMergeFields(false);
     };
