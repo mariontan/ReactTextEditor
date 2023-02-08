@@ -38,7 +38,7 @@ const App = () => {
     };
 
     const handleSaveTemplate = () => {
-        axios.post(`${HOST}`, {
+        axios.post(`${CORS_PROXY_URL}${HOST}`, {
             id: `${TEMPLATE_ID}`,
             template: template,
         })
@@ -49,6 +49,7 @@ const App = () => {
                 console.error(error);
             });
     };
+
 
     const handleMergeFieldClick = (field) => {
         const templateArr = template.split(' ')
