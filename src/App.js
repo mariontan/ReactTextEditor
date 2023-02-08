@@ -54,16 +54,21 @@ const App = () => {
 
     const handleMergeFieldClick = (field) => {
         const templateArr = template.split(' ')
-        const indexToInsert = clickedWordIndex + 1
-        templateArr.splice(indexToInsert, 0, field.value)
-        const newInsertedIndex = [...insertedIndex, indexToInsert]
-        setInsertedIndex(newInsertedIndex.map(item => {
-            if (item > indexToInsert) {
+        const indexToInsert = []
+        const length = field.value.split(' ').length
+        for (let i = 1; i <= length; i++) {
+            indexToInsert.push(clickedWordIndex + i)
+        }
+        templateArr.splice(clickedWordIndex + 1, 0, field.value)
+        const newInsertedIndex = [...insertedIndex.map(item => {
+            if (item > clickedWordIndex + 1) {
                 return item + 1
             }
             return item
-        }))
-        console.log('props clicked word index', indexToInsert)
+        }), ...indexToInsert]
+
+        setInsertedIndex(newInsertedIndex)
+        console.log('props clicked word index', clickedWordIndex + 1)
         const newTemplate = templateArr.join(' ')
         setTemplate(newTemplate);
         setShowMergeFields(false);
@@ -82,7 +87,7 @@ const App = () => {
     const onBackSpace = (event) => {
         const { keyCode, target } = event
         const { index } = getTheWord(target.selectionStart, template)
-        // act only on delete
+        // act only on backspace
         if (keyCode !== 8) {
             return
         }
