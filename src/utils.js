@@ -1,4 +1,6 @@
-export const getTheWord = (selectionStart, message) => {
+import { useEffect, useRef } from "react";
+
+export function getTheWord(selectionStart, message) {
     let arr = message.split(" ");
     let sum = 0
     for (let i = 0; i < arr.length; i++) {
@@ -13,7 +15,7 @@ export const getTheWord = (selectionStart, message) => {
     }
 }
 
-export const getCursorXY = (input, selectionPoint) => {
+export function getCursorXY(input, selectionPoint) {
     const {
         offsetLeft: inputX,
         offsetTop: inputY,
@@ -53,4 +55,38 @@ export const getCursorXY = (input, selectionPoint) => {
         x: inputX + spanX,
         y: inputY + spanY - 245,
     }
+}
+
+export function getNewInsertedIndex(field, clickedWordIndex, insertedIndex) {
+    const indexToInsert = [];
+    const length = field.value.split(' ').length;
+    for (let i = 1; i <= length; i++) {
+        indexToInsert.push(clickedWordIndex + i);
+    }
+    const newInsertedIndex = [...insertedIndex.map(item => {
+        if (item > clickedWordIndex + 1) {
+            return item + 1;
+        }
+        return item;
+    }), ...indexToInsert];
+    return newInsertedIndex;
+}
+
+export function removeIndex(insertedIndex, index) {
+    const filteredInsertedIndex = insertedIndex.filter(item => item !== index);
+    const newInsertedIndex = filteredInsertedIndex.map((item) => {
+        if (item > index) {
+            return item - 1;
+        }
+        return item;
+    });
+    return newInsertedIndex;
+}
+
+export function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value; //assign the value of ref to the argument
+    }); //this code will run when the value of 'value' changes
+    return ref.current; //in the end, return the current ref value.
 }
