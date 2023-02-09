@@ -71,7 +71,8 @@ const App = () => {
         const { target, currentTarget } = event
         const { selectionStart, value } = target
         const { x, y } = getCursorXY(currentTarget, selectionStart)
-        setClickedWordIndex(selectionStart)
+        const templateLen = template.split(' ').length
+        setClickedWordIndex(templateLen - 1)
         setTemplate(value)
         setTrianglePosition({
             top: y,
