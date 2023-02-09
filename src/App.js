@@ -99,6 +99,11 @@ const App = () => {
         <div>
             <div onMouseLeave={() => setShowMergeFields(false)}>
                 <textarea
+                    style={{
+                        width: '900px',
+                        height: '150px',
+                        resize: 'none'
+                    }}
                     value={template}
                     onChange={onTextAreaChange}
                     onClick={handleEditorClick}
