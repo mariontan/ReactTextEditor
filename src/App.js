@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CORS_PROXY_URL, HOST, LOAD_URL, TEMPLATE_ID } from './constants';
-import { getTheWord, getCursorXY, getNewInsertedIndex, removeIndex } from './utils';
+import { getTheWord, getCursorXY, getNewInsertedIndex, removeIndex, usePrevious } from './utils';
 import Dropdown from './components/dropdown'
 
 const App = () => {
@@ -13,9 +13,16 @@ const App = () => {
     const [clickedWordIndex, setClickedWordIndex] = useState(0)
     const [insertedIndex, setInsertedIndex] = useState([])
 
+    const prevTemplate = usePrevious(template)
     useEffect(() => {
         setCharacterCount(template.length);
     }, [template]);
+    useEffect(() => {
+        if (template !== prevTemplate) {
+            console.log('props prev', prevTemplate)
+            console.log('props current', template)
+        }
+    }, [template, prevTemplate]);
 
     const handleEditorClick = (event) => {
         const { index } = getTheWord(event.target.selectionStart, template)
@@ -87,6 +94,7 @@ const App = () => {
             setInsertedIndex(newInsertedIndex)
         }
     }
+
     return (
         <div>
             <div onMouseLeave={() => setShowMergeFields(false)}>

@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 export function getTheWord(selectionStart, message) {
     let arr = message.split(" ");
     let sum = 0
@@ -79,4 +81,12 @@ export function removeIndex(insertedIndex, index) {
         return item;
     });
     return newInsertedIndex;
+}
+
+export function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value; //assign the value of ref to the argument
+    }); //this code will run when the value of 'value' changes
+    return ref.current; //in the end, return the current ref value.
 }
