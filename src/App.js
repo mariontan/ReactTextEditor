@@ -69,10 +69,10 @@ const App = () => {
 
     const onTextAreaChange = (event) => {
         const { target, currentTarget } = event
-        const { selectionStart } = target
-        setClickedWordIndex(selectionStart)
-        setTemplate(event.target.value)
+        const { selectionStart, value } = target
         const { x, y } = getCursorXY(currentTarget, selectionStart)
+        setClickedWordIndex(selectionStart)
+        setTemplate(value)
         setTrianglePosition({
             top: y,
             left: x,
